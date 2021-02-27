@@ -390,6 +390,9 @@ void BinaryWriter::WriteLoadStoreExpr(const Func* func,
 }
 
 void BinaryWriter::WriteExpr(const Func* func, const Expr* expr) {
+   char section_name[128];
+   printf("@ { line: %d, col_start: %d, col_end: %d }\n",expr->loc.line, expr->loc.first_column, expr->loc.last_column );
+
   switch (expr->type()) {
     case ExprType::AtomicLoad:
       WriteLoadStoreExpr<AtomicLoadExpr>(func, expr, "memory offset");
@@ -881,6 +884,10 @@ void BinaryWriter::WriteLinkingSection() {
 }
 
 Result BinaryWriter::WriteModule() {
+
+   char section_name[128];
+   printf( ";; SOURCE MAP INFO \n");
+
   stream_->WriteU32(WABT_BINARY_MAGIC, "WASM_BINARY_MAGIC");
   stream_->WriteU32(WABT_BINARY_VERSION, "WASM_BINARY_VERSION");
 
